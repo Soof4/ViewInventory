@@ -24,7 +24,7 @@ namespace ViewInventory
         /// Gets the description of this plugin.
         /// A short, one lined description that tells people what your plugin does.
         /// </summary>
-        public override string Description => "查阅背包";
+        public override string Description => "Check inventory.";
 
         /// <summary>
         /// Gets the name of this plugin.
@@ -46,6 +46,8 @@ namespace ViewInventory
         {
         }
 
+        public static Random Rand = new Random();
+
         /// <summary>
         /// Handles plugin initialization. 
         /// Fired when the server is started and the plugin is being loaded.
@@ -56,17 +58,17 @@ namespace ViewInventory
         /// </summary>
         public override void Initialize()
         {
-            Commands.ChatCommands.Add(new Command("vi", ViewInvent, "vi", "VI", "Vi", "vI", "v i")
+            Commands.ChatCommands.Add(new Command("vi", ViewInvent, "vi")
             {
-                HelpText = "输入 /vi 【玩家名】  来查看该玩家的库存\nEnter /vi [player name] to view the player's inventory"
+                HelpText = "Enter /vi [player name] to view the player's inventory"
             });
-            Commands.ChatCommands.Add(new Command("vi", ViewInventDisorder, "vid", "VID", "Vid", "vId")
+            Commands.ChatCommands.Add(new Command("vi", ViewInventDisorder, "vid")
             {
-                HelpText = "输入 /vid 【玩家名】  来查看该玩家的库存，不进行排列\nEnter / vid [player name] to view the player's inventory without sorting"
+                HelpText = "Enter / vid [player name] to view the player's inventory without sorting"
             });
-            Commands.ChatCommands.Add(new Command("vi", ViewInventText, "vit", "VIT", "Vit", "vIt")
+            Commands.ChatCommands.Add(new Command("vi", ViewInventText, "vit")
             {
-                HelpText = "输入 /vit 【玩家名】  来查看该玩家的库存，不进行排列\nEnter / vit [player name] to view the player's inventory without sorting"
+                HelpText = "Enter / vit [player name] to view the player's inventory without sorting"
             });
         }
 
@@ -92,7 +94,7 @@ namespace ViewInventory
         {
             if (!args.Parameters.Any())
             {
-                args.Player.SendInfoMessage("输入 /vi 【玩家名】  来查看该玩家的库存\nEnter / vi [player name] to view the player's inventory");
+                args.Player.SendInfoMessage("Enter / vi [player name] to view the player's inventory");
                 return;
             }
             string name = args.Parameters[0];
@@ -119,75 +121,75 @@ namespace ViewInventory
                     string forge = GetItemsFromChestString(li.TPlayer.bank3, NetItem.ForgeSlots);
                     string vault = GetItemsFromChestString(li.TPlayer.bank4, NetItem.VoidSlots);
 
-                    sb.AppendLine("玩家 【" + li.Name + "】 的所有库存如下:");
+                    sb.AppendLine($"{li.Name}'s Inventory:");
                     if (inventory.Length > 0 && inventory != null && inventory != "")
                     {
-                        sb.AppendLine("背包:");
+                        sb.AppendLine("Main Inventory:");
                         sb.AppendLine(FormatArrangement(inventory, 20, " "));
                     }
                     if (armor.Length > 0 && armor != null && armor != "")
                     {
-                        sb.AppendLine("盔甲 + 饰品 + 时装:");
+                        sb.AppendLine("Armor + Accessories + Vanity:");
                         sb.AppendLine(armor);
                     }
                     if (dyestuff.Length > 0 && dyestuff != null && dyestuff != "")
                     {
-                        sb.AppendLine("染料:");
+                        sb.AppendLine("Dyes:");
                         sb.AppendLine(dyestuff);
                     }
                     if (misc.Length > 0 && misc != null && misc != "")
                     {
-                        sb.AppendLine("宠物 + 矿车 + 坐骑 + 钩爪:");
+                        sb.AppendLine("Equipments:");
                         sb.AppendLine(misc);
                     }
                     if (miscDye.Length > 0 && miscDye != null && miscDye != "")
                     {
-                        sb.AppendLine("宠物 矿车 坐骑 钩爪 染料:");
+                        sb.AppendLine("Equipment Dyes:");
                         sb.AppendLine(miscDye);
                     }
                     if (trash != "【[i/s0:0]】 ")
                     {
-                        sb.AppendLine("垃圾桶:");
+                        sb.AppendLine("Trash Slot:");
                         sb.AppendLine(trash);
                     }
                     if (pig.Length > 0 && pig != null && pig != "")
                     {
-                        sb.AppendLine("猪猪储蓄罐:");
+                        sb.AppendLine("Piggy Bank:");
                         sb.AppendLine(FormatArrangement(pig, 20, " "));
                     }
                     if (safe.Length > 0 && safe != null && safe != "")
                     {
-                        sb.AppendLine("保险箱:");
+                        sb.AppendLine("Safe:");
                         sb.AppendLine(FormatArrangement(safe, 20, " "));
                     }
                     if (forge.Length > 0 && forge != null && forge != "")
                     {
-                        sb.AppendLine("护卫熔炉:");
+                        sb.AppendLine("Defender's Forge:");
                         sb.AppendLine(FormatArrangement(forge, 20, " "));
                     }
                     if (vault.Length > 0 && vault != null && vault != "")
                     {
-                        sb.AppendLine("虚空金库:");
+                        sb.AppendLine("Void Bag:");
                         sb.AppendLine(FormatArrangement(vault, 20, " "));
                     }
                     if (sb.Length > 0 && sb != null && sb.ToString() != "")
                         args.Player.SendMessage(sb.ToString(), TextColor());
                     else
-                        args.Player.SendInfoMessage("没有任何东西");
+                        args.Player.SendInfoMessage("Empty.");
                 }
             }
             else
             {
-                args.Player.SendInfoMessage("所查询玩家不在线，正在查询离线数据");
+                args.Player.SendInfoMessage("The player is not online, thus offline data will be shown.");
                 string offAll = GetOfflinePlayerInv(TShock.DB, name);
                 offAll = FormatArrangement(offAll, 35);
                 if (offAll != "")
                 {
-                    args.Player.SendMessage("玩家 【" + name + "】 的所有库存如下:" + "\n" + offAll, TextColor());
+                    args.Player.SendMessage($"{name}'s Inventory:\n{offAll}", TextColor());
                 }
                 else
                 {
-                    args.Player.SendInfoMessage("该玩家不存在！");
+                    args.Player.SendInfoMessage("Player not found.");
                 }
             }
         }
@@ -197,7 +199,7 @@ namespace ViewInventory
         {
             if (!args.Parameters.Any())
             {
-                args.Player.SendInfoMessage("输入 /vid 【玩家名】  来查看该玩家的库存，不进行排列\nEnter / vid [player name] to view the player's inventory without sorting");
+                args.Player.SendInfoMessage("Enter / vid [player name] to view the player's inventory without sorting");
                 return;
             }
             string name = args.Parameters[0];
@@ -230,24 +232,24 @@ namespace ViewInventory
                     all = FormatArrangement(all, 35);
                     if (all != "")
                     {
-                        args.Player.SendMessage("玩家 【" + li.Name + "】 的所有库存如下:\n" + all, TextColor());
+                        args.Player.SendMessage($"{li.Name}'s Inventory:\n{all}", TextColor());
                     }
                     else
-                        args.Player.SendInfoMessage("没有任何东西");
+                        args.Player.SendInfoMessage("Player not found.");
                 }
             }
             else
             {
-                args.Player.SendInfoMessage("所查询玩家不在线，正在查询离线数据");
+                args.Player.SendInfoMessage("The player is not online, thus offline data will be shown.");
                 string offAll = GetOfflinePlayerInv(TShock.DB, name);
                 offAll = FormatArrangement(offAll, 35);
                 if (offAll != "")
                 {
-                    args.Player.SendMessage("玩家 【" + name + "】 的所有库存如下:" + "\n" + offAll, TextColor());
+                    args.Player.SendMessage($"{name}'s Inventory:\n{offAll}", TextColor());
                 }
                 else
                 {
-                    args.Player.SendInfoMessage("该玩家不存在！");
+                    args.Player.SendInfoMessage("Player not found.");
                 }
             }
         }
@@ -257,7 +259,7 @@ namespace ViewInventory
         {
             if (!args.Parameters.Any())
             {
-                args.Player.SendInfoMessage("输入 /vit 【玩家名】  来查看该玩家的库存\nEnter / vit [player name] to view the player's inventory");
+                args.Player.SendInfoMessage("Enter / vit [player name] to view the player's inventory");
                 return;
             }
             string name = args.Parameters[0];
@@ -272,87 +274,87 @@ namespace ViewInventory
                 foreach (var li in list)
                 {
                     StringBuilder sb = new StringBuilder();
-                    string inventory = GetItemsString(li.TPlayer.inventory, NetItem.InventorySlots,1);
-                    string armor = GetItemsString(li.TPlayer.armor, NetItem.ArmorSlots,1);
-                    string dyestuff = GetItemsString(li.TPlayer.dye, NetItem.DyeSlots,1);
-                    string misc = GetItemsString(li.TPlayer.miscEquips, NetItem.MiscEquipSlots,1);
-                    string miscDye = GetItemsString(li.TPlayer.miscDyes, NetItem.MiscDyeSlots,1);
+                    string inventory = GetItemsString(li.TPlayer.inventory, NetItem.InventorySlots, 1);
+                    string armor = GetItemsString(li.TPlayer.armor, NetItem.ArmorSlots, 1);
+                    string dyestuff = GetItemsString(li.TPlayer.dye, NetItem.DyeSlots, 1);
+                    string misc = GetItemsString(li.TPlayer.miscEquips, NetItem.MiscEquipSlots, 1);
+                    string miscDye = GetItemsString(li.TPlayer.miscDyes, NetItem.MiscDyeSlots, 1);
                     string trash = $" [{Lang.prefix[li.TPlayer.trashItem.prefix].Value}.{li.TPlayer.trashItem.Name}:{li.TPlayer.trashItem.stack}] ";
 
-                    string pig = GetItemsFromChestString(li.TPlayer.bank, NetItem.PiggySlots,1);
-                    string safe = GetItemsFromChestString(li.TPlayer.bank2, NetItem.SafeSlots,1);
-                    string forge = GetItemsFromChestString(li.TPlayer.bank3, NetItem.ForgeSlots,1);
-                    string vault = GetItemsFromChestString(li.TPlayer.bank4, NetItem.VoidSlots,1);
+                    string pig = GetItemsFromChestString(li.TPlayer.bank, NetItem.PiggySlots, 1);
+                    string safe = GetItemsFromChestString(li.TPlayer.bank2, NetItem.SafeSlots, 1);
+                    string forge = GetItemsFromChestString(li.TPlayer.bank3, NetItem.ForgeSlots, 1);
+                    string vault = GetItemsFromChestString(li.TPlayer.bank4, NetItem.VoidSlots, 1);
 
-                    sb.AppendLine("玩家 【" + li.Name + "】 的所有库存如下:");
+                    sb.AppendLine($"{li.Name}'s Inventory:");
                     if (inventory.Length > 0 && inventory != null && inventory != "")
                     {
-                        sb.AppendLine("背包:");
+                        sb.AppendLine("Main Inventory:");
                         sb.AppendLine(FormatArrangement(inventory, 20, " "));
                     }
                     if (armor.Length > 0 && armor != null && armor != "")
                     {
-                        sb.AppendLine("盔甲 + 饰品 + 时装:");
+                        sb.AppendLine("Armor + Accessories + Vanity:");
                         sb.AppendLine(armor);
                     }
                     if (dyestuff.Length > 0 && dyestuff != null && dyestuff != "")
                     {
-                        sb.AppendLine("染料:");
+                        sb.AppendLine("Dyes:");
                         sb.AppendLine(dyestuff);
                     }
                     if (misc.Length > 0 && misc != null && misc != "")
                     {
-                        sb.AppendLine("宠物 + 矿车 + 坐骑 + 钩爪:");
+                        sb.AppendLine("Equipments:");
                         sb.AppendLine(misc);
                     }
                     if (miscDye.Length > 0 && miscDye != null && miscDye != "")
                     {
-                        sb.AppendLine("宠物 矿车 坐骑 钩爪 染料:");
+                        sb.AppendLine("Equipment Dyes:");
                         sb.AppendLine(miscDye);
                     }
                     if (trash != " [.:0] ")
                     {
-                        sb.AppendLine("垃圾桶:");
+                        sb.AppendLine("Trash Slot:");
                         sb.AppendLine(trash);
                     }
                     if (pig.Length > 0 && pig != null && pig != "")
                     {
-                        sb.AppendLine("猪猪储蓄罐:");
+                        sb.AppendLine("Piggy Bank:");
                         sb.AppendLine(FormatArrangement(pig, 20, " "));
                     }
                     if (safe.Length > 0 && safe != null && safe != "")
                     {
-                        sb.AppendLine("保险箱:");
+                        sb.AppendLine("Safe:");
                         sb.AppendLine(FormatArrangement(safe, 20, " "));
                     }
                     if (forge.Length > 0 && forge != null && forge != "")
                     {
-                        sb.AppendLine("护卫熔炉:");
+                        sb.AppendLine("Defender's Forge:");
                         sb.AppendLine(FormatArrangement(forge, 20, " "));
                     }
                     if (vault.Length > 0 && vault != null && vault != "")
                     {
-                        sb.AppendLine("虚空金库:");
+                        sb.AppendLine("Void Bag:");
                         sb.AppendLine(FormatArrangement(vault, 20, " "));
                     }
                     if (sb.Length > 0 && sb != null && sb.ToString() != "")
                         args.Player.SendMessage(sb.ToString(), TextColor());
                     else
-                        args.Player.SendInfoMessage("没有任何东西");
+                        args.Player.SendInfoMessage("Empty.");
                 }
             }
             else
             {
-                args.Player.SendInfoMessage("所查询玩家不在线，正在查询离线数据");
+                args.Player.SendInfoMessage("The player is not online, thus offline data will be shown.");
                 string offAll = GetOfflinePlayerInv(TShock.DB, name, 1);
                 offAll = FormatArrangement(offAll, 35);
                 if (offAll != "")
                 {
-                    args.Player.SendMessage("玩家 【" + name + "】 的所有库存如下:" + "\n" + offAll, TextColor());
+                    args.Player.SendMessage($"{name}'s Inventory:\n{offAll}", TextColor());
                 }
                 else
                 {
-                    args.Player.SendInfoMessage("该玩家不存在！");
+                    args.Player.SendInfoMessage("Player not found.");
                 }
             }
         }
@@ -504,9 +506,9 @@ namespace ViewInventory
         public static Color TextColor()
         {
             int r, g, b;
-            r = Main.rand.Next(60, 255);
-            g = Main.rand.Next(60, 255);
-            b = Main.rand.Next(60, 255);
+            r = Rand.Next(60, 255);
+            g = Rand.Next(60, 255);
+            b = Rand.Next(60, 255);
             return new Color(r, g, b);
         }
     }
