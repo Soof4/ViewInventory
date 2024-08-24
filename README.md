@@ -3,7 +3,7 @@
 ## 功能介绍
 查看玩家背包库存，可以查询在线和不在线的，包括猪猪，熔炉，虚空袋等各种库存
 
-If you want to read this in another language: [Spanish](https://github.com/Soof4/ViewInventory/blob/main/README_SPANISH.md)
+If you want to read this in another language: [Spanish](https://github.com/Soof4/ViewInventory/blob/master/README_SPANISH.md)
 
 ## 指令
 
