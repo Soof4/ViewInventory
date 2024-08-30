@@ -1,20 +1,20 @@
 # ViewInventory
-## 一个泰拉瑞亚tshock插件
-## 功能介绍
-查看玩家背包库存，可以查询在线和不在线的，包括猪猪，熔炉，虚空袋等各种库存
+## A Terraria TShock Plugin
+## Features
+View players' inventory, including both online and offline players. You can query various storage types like Piggy Bank, Furnace, Void Bag, and more.
 
 If you want to read this in another language: [Spanish](https://github.com/Soof4/ViewInventory/blob/main/README_SPANISH.md)
 
-## 指令
+## Commands
 
-- 权限1：vi
-- 指令1：/vi
-- 功能1：分类地查询玩家各种库存内的东西
-- 
-- 权限2：vi
-- 指令2：/vid
-- 功能2：不分类混在一起查询玩家各种库存内的东西
--
-- 权限3：vi
-- 指令3：/vit
-- 功能3：以文本的形式不分类混在一起查询，主要用于其他平台上进行信息传播，如qq机器人
+- Permission 1: vi
+- Command 1: /vi
+- Function 1: Query different types of players' inventories in a categorized manner
+
+- Permission 2: vi
+- Command 2: /vid
+- Function 2: Query different types of players' inventories in an uncategorized manner, mixing them together
+
+- Permission 3: vi
+- Command 3: /vit
+- Function 3: Query in an uncategorized, mixed-together text format, primarily used for spreading information on other platforms like QQ bots
