@@ -1,5 +1,4 @@
 #ViewInventory
-## Un complemento tshock de Terraria
 ## Introducción a la función
 Consulta el inventario del jugador, tanto online como offline, incluidos cerdos, hornos, bolsas vacías, etc. (Traducido por [FrankV22](https://github.com/itsFrankV22))
 ## Comandos
