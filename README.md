@@ -1,5 +1,4 @@
 # ViewInventory
-## A Terraria TShock Plugin
 ## Features
 View players' inventory, including both online and offline players. You can query various storage types like Piggy Bank, Furnace, Void Bag, and more.
 
